@@ -5,21 +5,25 @@
 валидировать данные, которыми инициализируются его атрибуты."""
 
 
-class Vacancy():
+class Vacancy:
+    """класс для работы с вакансиями"""
+    __slots__ = ['name_vacancy', 'url', 'description', 'salary']
 
     def __init__(self, name_vacancy, url, description, salary):
         self.name_vacancy = name_vacancy
         self.url = url
         self.description = description
-        self.__valid_salary(salary)
+        self.salary = self.__valid_salary(salary)
 
 
 
-
-    def valid_salary(self, salary):
-        """шаги сравнение """
-        self.salary = логика валидации(сравнения)
-
+    def __valid_salary(self, salary):
+        """шаги сравнения"""
+        if not salary:
+            return 0
+        if isinstance(salary, dict):
+            return salary.get("from", 0) or salary.get("to", 0)
+        return salary
 
     def __lt__(self, other):
         """Сравнения если меньше"""
@@ -29,3 +33,4 @@ class Vacancy():
     def __gt__(self, other):
         """Сравнения если больше"""
         return self.salary > other.salary
+

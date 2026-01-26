@@ -4,7 +4,7 @@ from connect_file_abc import ConnectFile
 
 class Connest_JSON(ConnectFile):
 
-    def __init__(self, filename):.
+    def __init__(self, filename):
         self.filename = filename
         pass
 
