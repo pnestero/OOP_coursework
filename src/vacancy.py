@@ -1,7 +1,7 @@
 class Vacancy:
     """Класс для работы с вакансиями"""
 
-    __slots__ = ['name_vacancy', 'url', 'description', 'salary']
+    __slots__ = ["name_vacancy", "url", "description", "salary"]
 
     def __init__(self, name_vacancy, url, description, salary):
         self.name_vacancy = name_vacancy
@@ -37,15 +37,15 @@ class Vacancy:
         vacancies_list = []
 
         for item in vacancies_data:
-            name = item.get('name', 'Без названия')
-            url = item.get('alternate_url', '')
+            name = item.get("name", "Без названия")
+            url = item.get("alternate_url", "")
 
-            snippet = item.get('snippet', {})
-            requirement = snippet.get('requirement', '')
-            responsibility = snippet.get('responsibility', '')
+            snippet = item.get("snippet", {})
+            requirement = snippet.get("requirement", "")
+            responsibility = snippet.get("responsibility", "")
             description = requirement or responsibility
 
-            salary_data = item.get('salary')
+            salary_data = item.get("salary")
 
             vacancy = cls(name, url, description, salary_data)
             vacancies_list.append(vacancy)

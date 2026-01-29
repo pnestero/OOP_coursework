@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 from src.json_saver import JSONSaver
 from src.vacancy import Vacancy
@@ -7,8 +7,6 @@ from src.vacancy import Vacancy
 
 def test_create_saver():
     """Создание JSONSaver"""
-    from src.json_saver import JSONSaver
-
     saver = JSONSaver("test.json")
 
     assert saver is not None
@@ -24,9 +22,6 @@ def test_create_saver():
 
 def test_add_vacancy_simple():
     """Добавление вакансии"""
-    from src.json_saver import JSONSaver
-    from src.vacancy import Vacancy
-
     test_file = "test_vacancy.json"
 
     # Удаляем если был старый файл
@@ -49,21 +44,19 @@ def test_add_vacancy_simple():
 
 def test_read_vacancies():
     """Чтение вакансий"""
-    from src.json_saver import JSONSaver
-
     test_file = "test_read.json"
 
     # Создаем тестовый файл вручную
     test_data = [{"name_vacancy": "Test", "url": "http://test.com", "salary": 100000}]
 
-    with open(test_file, 'w') as f:
+    with open(test_file, "w") as f:
         json.dump(test_data, f)
 
     saver = JSONSaver(test_file)
     vacancies = saver.get_vacancies()
 
     assert len(vacancies) == 1
-    assert vacancies[0]['name_vacancy'] == "Test"
+    assert vacancies[0]["name_vacancy"] == "Test"
 
     # Убираем
     if os.path.exists(test_file):
@@ -72,17 +65,26 @@ def test_read_vacancies():
 
 def test_filter_vacancies():
     """Фильтрация вакансий"""
-    from src.json_saver import JSONSaver
 
     test_file = "test_filter.json"
 
     # Создаем тестовый файл
     test_data = [
-        {"name_vacancy": "Python Developer", "url": "url1", "description": "Python job", "salary": 100000},
-        {"name_vacancy": "Java Developer", "url": "url2", "description": "Java job", "salary": 120000}
+        {
+            "name_vacancy": "Python Developer",
+            "url": "url1",
+            "description": "Python job",
+            "salary": 100000,
+        },
+        {
+            "name_vacancy": "Java Developer",
+            "url": "url2",
+            "description": "Java job",
+            "salary": 120000,
+        },
     ]
 
-    with open(test_file, 'w') as f:
+    with open(test_file, "w") as f:
         json.dump(test_data, f)
 
     saver = JSONSaver(test_file)
@@ -90,7 +92,7 @@ def test_filter_vacancies():
     # Фильтруем по Python
     python_vacancies = saver.get_vacancies(keyword="Python")
     assert len(python_vacancies) == 1
-    assert python_vacancies[0]['name_vacancy'] == "Python Developer"
+    assert python_vacancies[0]["name_vacancy"] == "Python Developer"
 
     # Все вакансии
     all_vacancies = saver.get_vacancies()
@@ -103,18 +105,27 @@ def test_filter_vacancies():
 
 def test_delete_vacancy():
     """Удаление вакансии"""
-    from src.json_saver import JSONSaver
-    from src.vacancy import Vacancy
+
 
     test_file = "test_delete.json"
 
     # Создаем тестовый файл
     test_data = [
-        {"name_vacancy": "Удалить", "url": "delete_me", "description": "test", "salary": 50000},
-        {"name_vacancy": "Оставить", "url": "keep_me", "description": "test", "salary": 100000}
+        {
+            "name_vacancy": "Удалить",
+            "url": "delete_me",
+            "description": "test",
+            "salary": 50000,
+        },
+        {
+            "name_vacancy": "Оставить",
+            "url": "keep_me",
+            "description": "test",
+            "salary": 100000,
+        },
     ]
 
-    with open(test_file, 'w') as f:
+    with open(test_file, "w") as f:
         json.dump(test_data, f)
 
     saver = JSONSaver(test_file)
@@ -126,10 +137,10 @@ def test_delete_vacancy():
     saver.delete_vacancy(vacancy_to_delete)
 
     # Проверяем что осталась одна
-    with open(test_file, 'r') as f:
+    with open(test_file, "r") as f:
         data = json.load(f)
         assert len(data) == 1
-        assert data[0]['url'] == "keep_me"
+        assert data[0]["url"] == "keep_me"
 
     # Убираем
     if os.path.exists(test_file):

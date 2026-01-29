@@ -1,9 +1,12 @@
 from src.vacancy import Vacancy
 
+
 # Тестируем создание вакансии
 def test_create_vacancy():
 
-    v = Vacancy("Python Developer", "http://hh.ru/vacancy/123", "Разработка на Python", 100000)
+    v = Vacancy(
+        "Python Developer", "http://hh.ru/vacancy/123", "Разработка на Python", 100000
+    )
 
     # Проверяем что поля установлены правильно
     assert v.name_vacancy == "Python Developer"

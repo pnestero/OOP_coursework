@@ -1,6 +1,6 @@
 from src.hh_api import HH_API
-from src.vacancy import Vacancy
 from src.json_saver import JSONSaver
+from src.vacancy import Vacancy
 
 
 def user_interaction():
@@ -31,8 +31,8 @@ def user_interaction():
     # Сохранение в файл
     saver = JSONSaver()
     # очищаем файл перед записью
-    with open('vacancies.json', 'w', encoding='utf-8') as f:
-        f.write('[]')
+    with open("vacancies.json", "w", encoding="utf-8") as f:
+        f.write("[]")
     # добавляем
     for vacancy in vacancies:
         saver.add_vacancy(vacancy)

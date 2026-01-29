@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 
 class VacancyAPI(ABC):
     """Абстрактный класс для работы с API сервисов вакансий"""
 
     @abstractmethod
-    def _connect(self, url: str, params: Dict[str, Any], headers: Dict[str, str]) -> Dict[str, Any]:
+    def _connect(
+        self, url: str, params: Dict[str, Any], headers: Dict[str, str]
+    ) -> Dict[str, Any]:
         """Подключение API"""
         pass
 

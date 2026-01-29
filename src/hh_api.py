@@ -1,14 +1,18 @@
+from typing import Any, Dict, List
+
 import requests
-from typing import Dict, Any, List
+
 from src.abstract_classes import VacancyAPI
 
 
 class HH_API(VacancyAPI):
     def __init__(self):
         self._base_url = "https://api.hh.ru/vacancies"
-        self._headers = {'User-Agent': 'HH-User-Agent'}
+        self._headers = {"User-Agent": "HH-User-Agent"}
 
-    def _connect(self, url: str, params: Dict[str, Any], headers: Dict[str, str]) -> Dict[str, Any]:
+    def _connect(
+        self, url: str, params: Dict[str, Any], headers: Dict[str, str]
+    ) -> Dict[str, Any]:
         """
         Подключение и запрос API
         :param url: ссылка для подключения
@@ -30,11 +34,6 @@ class HH_API(VacancyAPI):
         :param search_query: Поисковый запрос
         :return: Список словарей
         """
-        params = {
-            'text': search_query,
-            'per_page': 100,
-            'area': 113,
-            'page': 0
-        }
+        params = {"text": search_query, "per_page": 100, "area": 113, "page": 0}
         data = self._connect(self._base_url, params, self._headers)
-        return data.get('items', [])
+        return data.get("items", [])
