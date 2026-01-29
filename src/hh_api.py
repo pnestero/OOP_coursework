@@ -11,7 +11,7 @@ class HH_API(VacancyAPI):
         self._headers = {"User-Agent": "HH-User-Agent"}
 
     def _connect(
-        self, url: str, params: Dict[str, Any], headers: Dict[str, str]
+            self, url: str, params: Dict[str, Any], headers: Dict[str, str]
     ) -> Dict[str, Any]:
         """
         Подключение и запрос API
