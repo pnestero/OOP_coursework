@@ -1,24 +1,16 @@
-"""Реализовать класс, наследующийся от абстрактного класса,
-для работы с платформой hh.ru.
-Класс должен уметь подключаться к API и получать вакансии."""
-
-from abc import ABC, abstractmethod
-from typing import Any, Dict, List
-
 import requests
-
+from typing import Dict, Any, List
 from src.abstract_classes import VacancyAPI
 
 
 class HH_API(VacancyAPI):
-
     def __init__(self):
         self._base_url = "https://api.hh.ru/vacancies"
         self._headers = {'User-Agent': 'HH-User-Agent'}
 
     def _connect(self, url: str, params: Dict[str, Any], headers: Dict[str, str]) -> Dict[str, Any]:
         """
-        Подключение API
+        Подключение и запрос API
         :param url: ссылка для подключения
         :param params: параметр запроса
         :param headers: заголовки запроса
@@ -39,10 +31,10 @@ class HH_API(VacancyAPI):
         :return: Список словарей
         """
         params = {
-            'text': search_query,  # Критерий: параметр text
-            'per_page': 100,  # Критерий: параметр per_page
-            'area': 113,  # Россия (необязательно, но удобно)
-            'page': 0  # Начинаем с первой страницы
+            'text': search_query,
+            'per_page': 100,
+            'area': 113,
+            'page': 0
         }
         data = self._connect(self._base_url, params, self._headers)
         return data.get('items', [])

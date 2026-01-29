@@ -1,35 +1,63 @@
-# Создание экземпляра класса для работы с API сайтов с вакансиями
-hh_api = HeadHunterAPI()
+from src.hh_api import HH_API
+from src.vacancy import Vacancy
+from src.json_saver import JSONSaver
 
-# Получение вакансий с hh.ru в формате JSON
-hh_vacancies = hh_api.get_vacancies("Python")
 
-# Преобразование набора данных из JSON в список объектов
-vacancies_list = Vacancy.cast_to_object_list(hh_vacancies)
-
-# Пример работы контструктора класса с одной вакансией
-vacancy = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>", "100 000-150 000 руб.", "Требования: опыт работы от 3 лет...")
-
-# Сохранение информации о вакансиях в файл
-json_saver = JSONSaver()
-json_saver.add_vacancy(vacancy)
-json_saver.delete_vacancy(vacancy)
-
-# Функция для взаимодействия с пользователем
 def user_interaction():
-    platforms = ["HeadHunter"]
+    """Основная функция программы"""
+
+    # Ввод данных от пользователя
     search_query = input("Введите поисковый запрос: ")
-    top_n = int(input("Введите количество вакансий для вывода в топ N: "))
-    filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split()
-    salary_range = input("Введите диапазон зарплат: ") # Пример: 100000 - 150000
+    if not search_query:
+        print("Запрос не может быть пустым!")
+        return
 
-    filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
+    top_n = int(input("Сколько вакансий показать в топе? "))
+    filter_words = input("Ключевые слова для фильтрации (через пробел): ").split()
 
-    ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
+    # Получение вакансий с HH
+    print("\nИщем вакансии...")
+    hh_api = HH_API()
+    vacancies_data = hh_api.get_vacancies(search_query)
 
-    sorted_vacancies = sort_vacancies(ranged_vacancies)
-    top_vacancies = get_top_vacancies(sorted_vacancies, top_n)
-    print_vacancies(top_vacancies)
+    if not vacancies_data:
+        print("Вакансий не найдено")
+        return
+
+    # Создание объектов вакансий
+    vacancies = Vacancy.cast_to_object_list(vacancies_data)
+    print(f"Найдено вакансий: {len(vacancies)}")
+
+    # Сохранение в файл
+    saver = JSONSaver()
+    # очищаем файл перед записью
+    with open('vacancies.json', 'w', encoding='utf-8') as f:
+        f.write('[]')
+    # добавляем
+    for vacancy in vacancies:
+        saver.add_vacancy(vacancy)
+    print("Вакансии сохранены в файл vacancies.json")
+
+    # Фильтрация по ключевым словам
+    if filter_words:
+        filtered_vacancies = []
+        for vacancy in vacancies:
+            text = (vacancy.name_vacancy + vacancy.description).lower()
+            for word in filter_words:
+                if word.lower() in text:
+                    filtered_vacancies.append(vacancy)
+                    break
+        vacancies = filtered_vacancies
+
+    # Сортировка и вывод топ N
+    vacancies.sort(reverse=True)  # от большей зарплаты к меньшей
+    top_vacancies = vacancies[:top_n]
+
+    print(f"\nТоп {len(top_vacancies)} вакансий по зарплате:")
+
+    for i, vacancy in enumerate(top_vacancies, 1):
+        print(f"{i}. {vacancy}")
+        print()
 
 
 if __name__ == "__main__":

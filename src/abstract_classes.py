@@ -14,6 +14,3 @@ class VacancyAPI(ABC):
     def get_vacancies(self, search_query: str) -> List[Dict[str, Any]]:
         """Получение вакансий через API"""
         pass
-
-
-
