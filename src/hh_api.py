@@ -20,10 +20,14 @@ class HH_API(VacancyAPI):
         :param headers: заголовки запроса
         :return: ответ JSON
         """
+        # Добавил проверку статус кода
         try:
             response = requests.get(url, params=params, headers=headers)
-            response.raise_for_status()
-            return response.json()
+            if response.ok:
+                return response.json()
+            else:
+                print(f"Ошибка API {response.status_code}")
+                return {}
 
         except requests.exceptions.RequestException as e:
             print(f"Ошибка подключения API {e}")
